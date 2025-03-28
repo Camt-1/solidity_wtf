@@ -42,7 +42,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         return _balances[owner];
     }
 
-    function ownerOf(uint tokenId) public view override returns (address owner)
+    function ownerOf(uint256 tokenId) public view override returns (address owner)
     {
         owner = _owners[tokenId];
         require(owner != address(0), "token doesn't exist");
@@ -94,7 +94,7 @@ contract ERC721 is IERC721, IERC721Metadata {
     function _isApprovedOrOwner(
         address owner,
         address spender,
-        uint tokenId
+        uint256 tokenId
     )
         private
         view
@@ -109,7 +109,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         address owner,
         address sender,
         address recipient,
-        uint tokenId
+        uint256 tokenId
     )
         private
     {
@@ -128,7 +128,7 @@ contract ERC721 is IERC721, IERC721Metadata {
     function transferFrom(
         address sender,
         address recipient,
-        uint tokenId
+        uint256 tokenId
     )
         external
         override
@@ -145,7 +145,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         address owner,
         address sender,
         address recipient,
-        uint tokenId,
+        uint256 tokenId,
         bytes memory _data
     )
         private
@@ -163,7 +163,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         public
         override
     {
-        address owner = ownerOf[tokenId];
+        address owner = ownerOf(tokenId);
         require(
             _isApprovedOrOwner(owner, sender, tokenId),
             "not owner nor approved"
@@ -174,15 +174,15 @@ contract ERC721 is IERC721, IERC721Metadata {
     function safeTransferFrom(
         address sender,
         address recipient,
-        uint tokenId
+        uint256 tokenId
     )
         external
         override
     {
-        safeTransferFrom(sender, recipient, tokenId);
+        safeTransferFrom(sender, recipient, tokenId, "");
     }
 
-    function _mint(address recipient, uint tokenId) internal virtual {
+    function _mint(address recipient, uint256 tokenId) internal virtual {
         require(recipient != address(0), "mint to zero address");
         require(_owners[tokenId] == address(0), "token already minted");
 
@@ -237,7 +237,7 @@ contract ERC721 is IERC721, IERC721Metadata {
         returns (string memory)
     {
         string memory baseURI = _baseURI();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI), tokenId.toString()) : "";
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
 
     //计算{tokenURI}的BaseURI，tokenURI就是把baseURI和tokenId拼接在一起，需要开发重写。
