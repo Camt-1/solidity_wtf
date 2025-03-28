@@ -106,3 +106,65 @@ contract SignatureNFT is ERC721 {
         return ECDSA.verify(_msgHash, _signature, signer);
     }
 }
+
+contract VerifySignature {
+    function getMessageHash(address _addr,uint256 _tokenId)
+        public
+        pure
+        returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(_addr, _tokenId));
+    }
+
+    function getEthSignedMessageHash(bytes32 _messageHash)
+        public
+        pure
+        returns (bytes32)
+    {
+        return
+            keccak256(
+                abi.encodePacked("\x19Ethereum Signed Message:\n32", _messageHash)
+            );
+    }
+
+    function verify(
+        address _signer,
+        address _addr,
+        uint _tokenId,
+        bytes memory signature
+    ) public pure returns (bool) {
+        bytes32 messageHash = getMessageHash(_addr, tokenId);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        return recoverSigner(ethSignedMessageHash, signature) == _signer;
+    }
+    
+    function recoverSigner(bytes32 _ethSignedMessageHash, bytes memory _signature)
+        public
+        pure
+        returns (address)
+    {
+        (bytes32 r, bytes32 s, uint8 v) = splitSignature(_signature);
+
+        return ecrecover(_ethSignedMessageHash, v, r, s);
+    }
+
+    function splitSignature(bytes memory sig)
+        public
+        pure
+        returns (
+            bytes32 r,
+            bytes32 s,
+            uint8
+        )
+    {
+        require(sig.length == 65, "invalid signature length");
+
+        assembly {
+            r := mload(add(sig, 0x20))
+            s := mload(add(sig, 0x40))
+            v := bytes(0, mload(add(sig, 0x60)))
+        }
+        // implicitly return (r, s, v)
+    }
+}
