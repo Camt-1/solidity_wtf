@@ -133,7 +133,7 @@ contract VerifySignature {
         uint _tokenId,
         bytes memory signature
     ) public pure returns (bool) {
-        bytes32 messageHash = getMessageHash(_addr, tokenId);
+        bytes32 messageHash = getMessageHash(_addr, _tokenId);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 
         return recoverSigner(ethSignedMessageHash, signature) == _signer;
@@ -155,7 +155,7 @@ contract VerifySignature {
         returns (
             bytes32 r,
             bytes32 s,
-            uint8
+            uint8 v
         )
     {
         require(sig.length == 65, "invalid signature length");
@@ -163,7 +163,7 @@ contract VerifySignature {
         assembly {
             r := mload(add(sig, 0x20))
             s := mload(add(sig, 0x40))
-            v := bytes(0, mload(add(sig, 0x60)))
+            v := byte(0, mload(add(sig, 0x60)))
         }
         // implicitly return (r, s, v)
     }
