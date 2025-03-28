@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-import "./interface/IERC165.sol";
-import "./interface/IERC721.sol";
-import "./interface/IERC721Metadata.sol";
-import "./interface/IERC721Receiver.sol";
+import "./interfaces/IERC165.sol";
+import "./interfaces/IERC721.sol";
+import "./interfaces/IERC721Metadata.sol";
+import "./interfaces/IERC721Receiver.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract ERC721 is IERC721, IERC721Metadata {
@@ -157,7 +157,7 @@ contract ERC721 is IERC721, IERC721Metadata {
     function safeTransferFrom(
         address sender,
         address recipient,
-        uint tokenId,
+        uint256 tokenId,
         bytes memory _data
     )
         public

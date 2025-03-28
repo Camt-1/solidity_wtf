@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-import "./interface/IERC20.sol";
+import "./interfaces/IERC20.sol";
 
 contract Airdrop {
     mapping(address => uint) failTransferList;
