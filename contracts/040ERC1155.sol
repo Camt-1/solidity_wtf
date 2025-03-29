@@ -4,8 +4,8 @@ pragma solidity ^0.8.28;
 import "./interfaces/IERC1155.sol";
 import "./interfaces/IERC1155Receiver.sol";
 import "./interfaces/IERC1155MetadataURI.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IERC165.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract ERC1155 is IERC165, IERC1155, IERC1155MetadataURI {
     using Strings for uint256;
@@ -57,7 +57,7 @@ contract ERC1155 is IERC165, IERC1155, IERC1155MetadataURI {
     //批量授权,调用者授权operator使用所有代币,释放ApprovalForAll事件
     //要求: msg.sender 1= operator
     function setApprovalForAll(address operator, bool approved) public virtual override {
-        require(msg.sender != operator, "ERc1155: setting approval status for self");
+        require(msg.sender != operator, "ERC1155: setting approval status for self");
         _operatorApprovals[msg.sender][operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
     }
